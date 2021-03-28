@@ -24,6 +24,7 @@ typedef enum {
 #ifndef NO_STEAM
 	HMD_STEAM,
 #endif
+	HMD_OPENXR,
 	NUM_HMD_TYPES
 } hmd_t;
 

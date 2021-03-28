@@ -2,6 +2,7 @@
 #include "../vr/include/vr.h"
 #include "include/r_vr_ovr.h"
 #include "include/r_vr_svr.h"
+#include "include/r_vr_openxr.h"
 
 #define MAX_SEGMENTS 25
 static fbo_t hud;
@@ -187,7 +188,7 @@ void R_VR_StartFrame()
 	extern int32_t scr_draw_loading;
 
 
-	if (!hmd || !hmd->frameStart || !hmd->getState)
+	if (!hmd || !hmd->getState)
 		return;
 	
 	R_AntialiasSetFBOSize(vrState.offscreen);
@@ -198,7 +199,8 @@ void R_VR_StartFrame()
 		resolutionChanged = true;
 	}
 
-	hmd->frameStart(resolutionChanged);
+	if (hmd->frameStart)
+		hmd->frameStart(resolutionChanged);
 	hmd->getState(&vrState);
 
 	if (vr_hud_width->modified || vr_hud_height->modified)
@@ -441,7 +443,8 @@ void R_VR_EndFrame()
 		GL_SetIdentity(GL_MODELVIEW);
 
 		// tell the HMD renderer to draw composited scene
-		hmd->present((qboolean) (loadingScreen || (vr_aimmode->value == 0)));
+		if (hmd->present)
+			hmd->present((qboolean) (loadingScreen || (vr_aimmode->value == 0)));
 	}
 }
 
@@ -489,7 +492,7 @@ void R_VR_Enable()
 		hmd = &available_hmds[(int32_t) vr_enabled->value];
 
 		success = R_GenFBO(640,480,1,GL_RGBA8,&hud);
-		success = success && hmd->enable && hmd->enable();
+		success = success && (!hmd->enable || hmd->enable());
 
 		// shader init
 		R_VR_InitDistortionShader(&vr_distort_shaders[0], &vr_shader_distort_norm);
@@ -558,6 +561,7 @@ void R_VR_Init()
 #ifndef NO_STEAM
 	available_hmds[HMD_STEAM] = vr_render_svr;
 #endif
+	available_hmds[HMD_OPENXR] = vr_render_openxr;
 
 	for (i = 0; i < NUM_HMD_TYPES; i++)
 	{

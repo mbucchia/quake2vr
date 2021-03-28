@@ -1,5 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="packages\OpenXR.Loader.1.0.10.2\build\native\OpenXR.Loader.props" Condition="Exists('packages\OpenXR.Loader.1.0.10.2\build\native\OpenXR.Loader.props')" />
+  <Import Project="packages\OpenXR.Headers.1.0.10.2\build\native\OpenXR.Headers.props" Condition="Exists('packages\OpenXR.Headers.1.0.10.2\build\native\OpenXR.Headers.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug - OpenXR|Win32">
       <Configuration>Debug - OpenXR</Configuration>
@@ -181,7 +183,7 @@
       <SubSystem>Windows</SubSystem>
       <OutputFile>$(OutDir)$(TargetFileName)</OutputFile>
       <AdditionalLibraryDirectories>external\sdl2\lib\x86\;external\glew\lib\Release\Win32\;backends\win32\lib\;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;xinput9_1_0.lib;wsock32.lib;winmm.lib;zlibstat.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;glew32s.lib;opengl32.lib;xinput9_1_0.lib;d3d11.lib;dxgi.lib;d3dcompiler.lib;wsock32.lib;winmm.lib;zlibstat.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <IgnoreSpecificDefaultLibraries>LIBCMT.LIB ;MSVCRT.LIB</IgnoreSpecificDefaultLibraries>
       <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
     </Link>
@@ -349,6 +351,7 @@
     <ClCompile Include="client\ui\ui_video.c" />
     <ClCompile Include="client\ui\ui_video_advanced.c" />
     <ClCompile Include="client\vr\vr_main.c" />
+    <ClCompile Include="client\vr\vr_openxr.cpp" />
     <ClCompile Include="client\vr\vr_ovr.c">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OpenXR|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -424,6 +427,7 @@
     <ClInclude Include="client\renderer\include\r_normals.h" />
     <ClInclude Include="client\renderer\include\r_stereo.h" />
     <ClInclude Include="client\renderer\include\r_vr.h" />
+    <ClInclude Include="client\renderer\include\r_vr_openxr.h" />
     <ClInclude Include="client\renderer\include\r_vr_ovr.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OpenXR|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -433,6 +437,7 @@
     <ClInclude Include="client\sound\include\qal.h" />
     <ClInclude Include="client\ui\include\ui_local.h" />
     <ClInclude Include="client\vr\include\vr.h" />
+    <ClInclude Include="client\vr\include\vr_openxr.h" />
     <ClInclude Include="client\vr\include\vr_ovr.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug - OpenXR|Win32'">true</ExcludedFromBuild>
     </ClInclude>
@@ -481,7 +486,21 @@
       <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release - No SteamVR|Win32'">win32;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ResourceCompile>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\OpenXR.Headers.1.0.10.2\build\native\OpenXR.Headers.targets" Condition="Exists('packages\OpenXR.Headers.1.0.10.2\build\native\OpenXR.Headers.targets')" />
+    <Import Project="packages\OpenXR.Loader.1.0.10.2\build\native\OpenXR.Loader.targets" Condition="Exists('packages\OpenXR.Loader.1.0.10.2\build\native\OpenXR.Loader.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\OpenXR.Headers.1.0.10.2\build\native\OpenXR.Headers.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\OpenXR.Headers.1.0.10.2\build\native\OpenXR.Headers.props'))" />
+    <Error Condition="!Exists('packages\OpenXR.Headers.1.0.10.2\build\native\OpenXR.Headers.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\OpenXR.Headers.1.0.10.2\build\native\OpenXR.Headers.targets'))" />
+    <Error Condition="!Exists('packages\OpenXR.Loader.1.0.10.2\build\native\OpenXR.Loader.props')" Text="$([System.String]::Format('$(ErrorText)', 'packages\OpenXR.Loader.1.0.10.2\build\native\OpenXR.Loader.props'))" />
+    <Error Condition="!Exists('packages\OpenXR.Loader.1.0.10.2\build\native\OpenXR.Loader.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\OpenXR.Loader.1.0.10.2\build\native\OpenXR.Loader.targets'))" />
+  </Target>
 </Project>

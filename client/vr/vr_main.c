@@ -2,6 +2,7 @@
 #include "include/vr.h"
 #include "include/vr_svr.h"
 #include "include/vr_ovr.h"
+#include "include/vr_openxr.h"
 
 cvar_t *vr_enabled;
 cvar_t *vr_autoenable;
@@ -73,6 +74,7 @@ const char *hmd_names[] =
 #ifndef NO_STEAM
 	"SteamVR",
 #endif
+	"OpenXR",
 	0
 };
 
@@ -447,6 +449,7 @@ void VR_Startup(void)
 #ifndef NO_STEAM
 	available_hmds[HMD_STEAM] = hmd_steam;
 #endif
+	available_hmds[HMD_OPENXR] = hmd_openxr;
 
 	for (i = 0; i < NUM_HMD_TYPES; i++)
 	{

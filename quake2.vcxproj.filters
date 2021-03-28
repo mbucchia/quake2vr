@@ -408,6 +408,9 @@
     <ClCompile Include="client\ui\ui_game_mod.c">
       <Filter>Source Files\client\ui</Filter>
     </ClCompile>
+    <ClCompile Include="client\vr\vr_openxr.cpp">
+      <Filter>Source Files\client\vr</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="client\anorms.h">
@@ -542,6 +545,12 @@
     <ClInclude Include="client\renderer\include\r_stereo.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="client\vr\include\vr_openxr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="client\renderer\include\r_vr_openxr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="backends\win32\q2.rc">
@@ -552,5 +561,8 @@
     <CustomBuild Include="backends\win32\q2.ico">
       <Filter>Resource Files</Filter>
     </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
 </Project>
