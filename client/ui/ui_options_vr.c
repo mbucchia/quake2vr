@@ -53,7 +53,10 @@ static menufield_s		s_options_vr_ipd_field;
 
 static menuaction_s		s_options_vr_enable_action;
 static menuaction_s		s_options_vr_advanced_action;
+
+#ifndef NO_OVR
 static menuaction_s		s_options_vr_ovr_action;
+#endif
 
 #ifndef NO_STEAM
 static menuaction_s		s_options_vr_svr_action;
@@ -189,11 +192,13 @@ static void AdvancedFunc ( void *unused )
 	M_Menu_Options_VR_Advanced_f();
 }
 
+#ifndef NO_OVR
 static void OVRFunc ( void *unused )
 {
 	VRConfigAccept();
 	M_Menu_Options_VR_OVR_f();
 }
+#endif
 
 #ifndef NO_STEAM
 static void SVRFunc ( void *unused )
@@ -351,12 +356,14 @@ void Options_VR_MenuInit ( void )
 	s_options_vr_advanced_action.generic.callback	= AdvancedFunc;
 	s_options_vr_advanced_action.generic.statusbar	= "advanced configuration options";
 
+#ifndef NO_OVR
 	s_options_vr_ovr_action.generic.type		= MTYPE_ACTION;
 	s_options_vr_ovr_action.generic.x			= MENU_FONT_SIZE;
 	s_options_vr_ovr_action.generic.y			= y+=MENU_LINE_SIZE;
 	s_options_vr_ovr_action.generic.name		= "oculus rift options";
 	s_options_vr_ovr_action.generic.callback	= OVRFunc;
 	s_options_vr_ovr_action.generic.statusbar	= "oculus rift configuration";
+#endif
 
 #ifndef NO_STEAM
 	s_options_vr_svr_action.generic.type		= MTYPE_ACTION;
@@ -400,7 +407,10 @@ void Options_VR_MenuInit ( void )
 	Menu_AddItem( &s_options_vr_menu, ( void * ) &s_options_vr_autoipd_box );
 	Menu_AddItem( &s_options_vr_menu, ( void * ) &s_options_vr_ipd_field );
 	Menu_AddItem( &s_options_vr_menu, ( void * ) &s_options_vr_advanced_action );
+
+#ifndef NO_OVR
 	Menu_AddItem( &s_options_vr_menu, ( void * ) &s_options_vr_ovr_action );
+#endif
 
 #ifndef NO_STEAM
 	Menu_AddItem( &s_options_vr_menu, ( void * ) &s_options_vr_svr_action );

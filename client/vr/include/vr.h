@@ -18,7 +18,9 @@ typedef struct {
 // prefer OVR native code path
 typedef enum {
 	HMD_NONE,
+#ifndef NO_OVR
 	HMD_RIFT,
+#endif
 #ifndef NO_STEAM
 	HMD_STEAM,
 #endif

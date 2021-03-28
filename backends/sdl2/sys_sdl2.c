@@ -892,3 +892,17 @@ int32_t main(int32_t argc, char *argv[])
 	// never gets here
     return 0;
 }
+
+#if defined(_MSC_VER) && (_MSC_VER >= 1900)
+// Fix build issue with newer VS.
+// https://stackoverflow.com/questions/30412951/unresolved-external-symbol-imp-fprintf-and-imp-iob-func-sdl2
+#include <stdio.h>
+extern FILE * __cdecl __iob_func(void)
+{
+    static FILE _iob[3];
+    _iob[0] = *stdin;
+    _iob[1] = *stdout;
+    _iob[2] = *stderr;
+    return _iob;
+}
+#endif

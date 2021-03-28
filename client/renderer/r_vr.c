@@ -552,10 +552,12 @@ void R_VR_Init()
 {
 	int32_t i;
 	available_hmds[HMD_NONE] = vr_render_none;
+#ifndef NO_OVR
+	available_hmds[HMD_RIFT] = vr_render_ovr;
+#endif
 #ifndef NO_STEAM
 	available_hmds[HMD_STEAM] = vr_render_svr;
 #endif
-	available_hmds[HMD_RIFT] = vr_render_ovr;
 
 	for (i = 0; i < NUM_HMD_TYPES; i++)
 	{

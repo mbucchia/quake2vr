@@ -67,7 +67,9 @@ static hmd_interface_t hmd_none = {
 const char *hmd_names[] = 
 {
 	"none",
+#ifndef NO_OVR
 	"Oculus Rift",
+#endif
 #ifndef NO_STEAM
 	"SteamVR",
 #endif
@@ -439,10 +441,12 @@ void VR_Startup(void)
 	Com_Printf("\n--------- VR Initialization ---------\n");
 
 	available_hmds[HMD_NONE] = hmd_none;
+#ifndef NO_OVR
+	available_hmds[HMD_RIFT] = hmd_rift;
+#endif
 #ifndef NO_STEAM
 	available_hmds[HMD_STEAM] = hmd_steam;
 #endif
-	available_hmds[HMD_RIFT] = hmd_rift;
 
 	for (i = 0; i < NUM_HMD_TYPES; i++)
 	{
